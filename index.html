@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 1. Сделайте 5 квадратов и каждый по клику меняет цвет (синий->зеленый->желтый).
+
+      //     Последовательность такая:
+
+      //     пустой квадрат
+      //     клик
+      //     цвет заливки синий
+      //     клик
+      //     цвет заливки зеленый
+      //     клик
+      //     цвет заливки желтый
+      //     клик
+      //     цвет заливки синий
+      //     и т. д.
+
+      //     * при клике по любому из них, он переставляется в конец
+
+      //     2. Сделайте табличку 3х3. Каждая ячейка должна быть заполнена
+      //     случайным числом от 1 до 100. По клику на ячейку под таблицей должно
+      //     выводиться число из ячейки. Все должно быть сделано JS-ом.
+      //     Для обработки клика используйте делегирование - у вас должен быть один обработчик клика для этой таблицы.
+
+      function generateBlocks(rows = 1) {
+        const div = document.createElement("div");
+        function clickBlock(e) {
+          let nextColor = "rgb(0, 0, 255)";
+          switch (e.target.style.backgroundColor) {
+            case "rgb(0, 0, 255)":
+              nextColor = "rgb(0, 255, 0)";
+              break;
+            case "rgb(0, 255, 0)":
+              nextColor = "rgb(255, 255, 0)";
+              break;
+          }
+
+          e.target.style.backgroundColor = nextColor;
+          div.appendChild(e.target);
+        }
+        for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+          const row = document.createElement("div");
+          row.addEventListener("click", clickBlock);
+          row.style.width = "100px";
+          row.style.height = "100px";
+          row.style.border = "1px solid #000";
+          div.appendChild(row);
+        }
+        document.body.appendChild(div);
+      }
+
+      generateBlocks(5);
+
+      function generateTable(columns = 1, rows = 1) {
+        const divRes = document.createElement("div");
+        divRes.id = "div-res";
+
+        function clickTable(e) {
+          divRes.innerText = e.target.innerText;
+        }
+
+        const table = document.createElement("table");
+        table.addEventListener("click", clickTable);
+        for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+          const row = document.createElement("tr");
+          for (let colIndex = 1; colIndex <= columns; colIndex++) {
+            const col = document.createElement("td");
+            col.innerText = Math.round(Math.random() * 100);
+            row.appendChild(col);
+          }
+          table.appendChild(row);
+        }
+        document.body.appendChild(table);
+        table.after(divRes);
+      }
+      generateTable(3, 3);
+    </script>
+  </body>
+</html>
